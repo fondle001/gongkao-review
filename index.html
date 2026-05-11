@@ -2,432 +2,397 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
 <title>公考复习手册</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bg: #f5f5f5;
-  --card: #fff;
-  --text: #333;
-  --text-secondary: #666;
-  --border: #e0e0e0;
-  --primary: #2563eb;
-  --primary-light: #eff6ff;
-  --accent: #f97316;
-  --success: #16a34a;
-  --radius: 12px;
-  --shadow: 0 1px 3px rgba(0,0,0,.08);
-  --font-mono: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+  --bg:#f8f7f4; --card:#fff; --text:#2c2416; --text2:#8b7355;
+  --border:#e8e3d8; --prime:#c0392b; --prime-l:#fef5f4; --accent:#d97706;
+  --success:#059669; --radius:14px; --shadow:0 2px 12px rgba(0,0,0,.06);
+  --font:'PingFang SC','Microsoft YaHei','Helvetica Neue',sans-serif;
+  --ink:#1a1a1a;
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #1a1a2e;
-    --card: #222;
-    --text: #e0e0e0;
-    --text-secondary: #999;
-    --border: #333;
-    --primary: #60a5fa;
-    --primary-light: #1e293b;
-  }
+@media (prefers-color-scheme:dark){
+  :root{--bg:#1c1915;--card:#26211b;--text:#e8dcc8;--text2:#9b8570;
+    --border:#3a3229;--prime:#e74c3c;--prime-l:#2a1a18;--shadow:0 2px 12px rgba(0,0,0,.3);
+    --ink:#e8dcc8;}
 }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.6;
-  -webkit-tap-highlight-color: transparent;
-  padding-bottom: env(safe-area-inset-bottom, 20px);
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:var(--font);background:var(--bg);color:var(--text);
+  line-height:1.65;-webkit-tap-highlight-color:transparent;
+  padding-bottom:env(safe-area-inset-bottom,20px);
+  -webkit-font-smoothing:antialiased;
 }
-
-/* Header */
-.header {
-  position: sticky; top: 0; z-index: 100;
-  background: var(--card); border-bottom: 1px solid var(--border);
-  padding: 12px 16px;
-  backdrop-filter: blur(10px);
+/* header */
+.hdr{
+  position:sticky;top:0;z-index:100;background:var(--card);
+  border-bottom:1px solid var(--border);padding:14px 18px;
+  display:flex;align-items:center;justify-content:space-between;
 }
-.header h1 { font-size: 18px; text-align: center; }
-
-/* Module tabs */
-.module-tabs {
-  display: flex; gap: 8px; padding: 12px 16px 0;
-  overflow-x: auto; -webkit-overflow-scrolling: touch;
-}
-.module-tab {
-  flex-shrink: 0; padding: 8px 20px;
-  border-radius: 20px; border: 1px solid var(--border);
-  background: var(--card); color: var(--text-secondary);
-  font-size: 14px; cursor: pointer; transition: .2s;
-  user-select: none;
-}
-.module-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
-
-/* Subject tabs */
-.subject-tabs {
-  display: flex; gap: 6px; padding: 8px 16px;
-  overflow-x: auto; -webkit-overflow-scrolling: touch;
-}
-.subject-tab {
-  flex-shrink: 0; padding: 6px 14px;
-  border-radius: 16px; background: var(--primary-light);
-  color: var(--primary); font-size: 13px; cursor: pointer;
-  transition: .2s; user-select: none; white-space: nowrap;
-}
-.subject-tab.active { background: var(--primary); color: #fff; }
-
-/* Lesson cards */
-.content { padding: 12px 16px 24px; }
-.lesson-card {
-  background: var(--card); border-radius: var(--radius);
-  box-shadow: var(--shadow); margin-bottom: 12px; overflow: hidden;
-}
-.lesson-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 16px; cursor: pointer; user-select: none;
-  border-bottom: 1px solid transparent; transition: .2s;
-}
-.lesson-header.open { border-bottom-color: var(--border); }
-.lesson-title { font-size: 15px; font-weight: 600; }
-.lesson-arrow { font-size: 12px; color: var(--text-secondary); transition: .2s; }
-.lesson-header.open .lesson-arrow { transform: rotate(180deg); }
-.lesson-body { display: none; padding: 16px; }
-.lesson-body.open { display: block; }
-
-/* Sections inside lesson */
-.section { margin-bottom: 16px; }
-.section:last-child { margin-bottom: 0; }
-.section-title {
-  font-size: 13px; font-weight: 700; color: var(--accent);
-  margin-bottom: 8px; display: flex; align-items: center; gap: 4px;
-}
-.formula-list { list-style: none; }
-.formula-item {
-  padding: 10px 14px; margin-bottom: 6px;
-  background: var(--primary-light); border-radius: 8px;
-  font-size: 14px; overflow-x: auto;
-}
-.formula-item .katex { font-size: 1.05em; }
-
-.concept-table {
-  width: 100%; border-collapse: collapse; font-size: 13px;
-}
-.concept-table th, .concept-table td {
-  padding: 8px 10px; text-align: left;
-  border-bottom: 1px solid var(--border);
-}
-.concept-table th { color: var(--text-secondary); font-weight: 500; }
-
-.example {
-  border: 1px solid var(--border); border-radius: 8px;
-  margin-bottom: 10px; overflow: hidden;
-}
-.example-q {
-  padding: 12px 14px; font-size: 14px;
-  background: #fffbeb; color: #92400e;
-}
-.example-q .katex { font-size: 1.05em; }
-@media (prefers-color-scheme: dark) {
-  .example-q { background: #2d1f00; color: #fbbf24; }
-}
-.example-a {
-  display: none; padding: 10px 14px;
-  font-size: 14px; border-top: 1px dashed var(--border);
-  background: #f0fdf4; color: #166534;
-}
-@media (prefers-color-scheme: dark) {
-  .example-a { background: #001a10; color: #4ade80; }
-}
-.example-a.show { display: block; }
-.example-toggle {
-  display: block; width: 100%; padding: 8px; text-align: center;
-  font-size: 12px; color: var(--primary); background: none;
-  border: none; cursor: pointer; border-top: 1px solid var(--border);
-}
-.example-toggle:active { opacity: .7; }
-
-.tip {
-  padding: 10px 14px; border-radius: 8px;
-  background: #fef3c7; color: #92400e; font-size: 13px;
-  margin-top: 8px;
-}
-@media (prefers-color-scheme: dark) {
-  .tip { background: #2d1f00; color: #fbbf24; }
-}
-
-.empty-state {
-  text-align: center; padding: 60px 20px; color: var(--text-secondary);
-}
-.empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+.hdr h1{font-size:18px;font-weight:700;letter-spacing:.5px}
+.hdr .sub{font-size:12px;color:var(--text2)}
+.search-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);
+  background:var(--bg);font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+/* search */
+.search-box{display:none;padding:8px 16px 12px;position:sticky;top:57px;z-index:99;background:var(--bg)}
+.search-box.show{display:block}
+.search-box input{width:100%;padding:10px 14px;border-radius:22px;border:2px solid var(--border);
+  background:var(--card);font-size:15px;color:var(--text);outline:none;transition:.2s}
+.search-box input:focus{border-color:var(--prime)}
+/* module tabs */
+.mod-tabs{display:flex;gap:10px;padding:14px 16px 0;overflow-x:auto;scrollbar-width:none}
+.mod-tabs::-webkit-scrollbar{display:none}
+.mod-tab{flex-shrink:0;padding:9px 22px;border-radius:22px;border:1.5px solid var(--border);
+  background:var(--card);color:var(--text2);font-size:14px;font-weight:500;
+  cursor:pointer;transition:all .2s;user-select:none}
+.mod-tab.active{background:var(--prime);color:#fff;border-color:var(--prime);box-shadow:0 2px 12px rgba(192,57,43,.25)}
+/* subject tabs */
+.sub-tabs{display:flex;gap:8px;padding:8px 16px;overflow-x:auto;scrollbar-width:none}
+.sub-tabs::-webkit-scrollbar{display:none}
+.sub-tab{flex-shrink:0;padding:7px 15px;border-radius:16px;
+  background:var(--prime-l);color:var(--prime);font-size:13px;font-weight:500;
+  cursor:pointer;transition:all .2s;user-select:none;white-space:nowrap}
+.sub-tab.active{background:var(--prime);color:#fff}
+/* content */
+.content{padding:10px 16px 30px}
+/* lesson card */
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+  margin-bottom:14px;overflow:hidden;border:1px solid var(--border);transition:all .2s}
+.card:active{transform:scale(.995)}
+.card-hd{display:flex;align-items:center;justify-content:space-between;
+  padding:15px 18px;cursor:pointer;user-select:none;gap:12px}
+.card-hd .badge{flex-shrink:0;width:32px;height:32px;border-radius:10px;
+  background:var(--prime);color:#fff;display:flex;align-items:center;
+  justify-content:center;font-size:13px;font-weight:700}
+.card-hd .info{flex:1;min-width:0}
+.card-hd .title{font-size:15px;font-weight:600;letter-spacing:.3px}
+.card-hd .subtitle{font-size:12px;color:var(--text2);margin-top:2px}
+.card-hd .arrow{font-size:12px;color:var(--text2);transition:.25s;flex-shrink:0}
+.card-hd.open .arrow{transform:rotate(180deg);color:var(--prime)}
+.card-bd{display:none;padding:0 18px 18px;animation:fadeIn .25s}
+.card-bd.open{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+/* section inside card */
+.sec{margin-bottom:18px}
+.sec:last-child{margin-bottom:0}
+.sec-tt{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:10px;
+  display:flex;align-items:center;gap:6px;letter-spacing:.5px}
+/* table */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl td:first-child{font-weight:600;color:var(--prime);white-space:nowrap;width:30%}
+.tbl tr:last-child td{border-bottom:none}
+/* formula */
+.fml-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+.fml-item{padding:12px 15px;background:var(--prime-l);border-radius:10px;
+  font-size:14px;overflow-x:auto;border-left:3px solid var(--prime)}
+/* example */
+.ex{border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden}
+.ex-q{padding:14px 15px;font-size:14px;background:#fffbeb;color:#92400e;line-height:1.7}
+@media(prefers-color-scheme:dark){.ex-q{background:#2d1f00;color:#fbbf24}}
+.ex-a{display:none;padding:12px 15px;font-size:14px;border-top:1px dashed var(--border);
+  background:#f0fdf4;color:#166534;line-height:1.7}
+@media(prefers-color-scheme:dark){.ex-a{background:#001a10;color:#4ade80}}
+.ex-a.show{display:block;animation:fadeIn .2s}
+.ex-btn{display:block;width:100%;padding:9px;text-align:center;font-size:12px;font-weight:600;
+  color:var(--prime);background:none;border:none;cursor:pointer;border-top:1px solid var(--border);
+  letter-spacing:.5px;transition:.15s}
+.ex-btn:active{background:var(--prime-l)}
+/* tip */
+.tip{padding:12px 15px;border-radius:10px;background:#fef3c7;color:#92400e;font-size:13px;line-height:1.6}
+@media(prefers-color-scheme:dark){.tip{background:#2d1f00;color:#fbbf24}}
+/* progress */
+.progress{text-align:center;padding:4px 0 20px;font-size:12px;color:var(--text2)}
+/* empty */
+.empty{text-align:center;padding:80px 20px;color:var(--text2)}
+.empty .icon{font-size:52px;margin-bottom:14px}
+.empty p{font-size:15px}
+/* footer */
+.ft{text-align:center;padding:10px 0 40px;font-size:11px;color:var(--text2);opacity:.6}
+/* search highlight */
+mark{background:#fef08a;color:#000;padding:1px 3px;border-radius:3px}
 </style>
 </head>
 <body>
 
-<div class="header"><h1>公考复习手册</h1></div>
-
-<div class="module-tabs" id="moduleTabs"></div>
-<div class="subject-tabs" id="subjectTabs"></div>
+<div class="hdr">
+  <div><h1>公考复习手册</h1><div class="sub">小P公考 · 资料分析讲义</div></div>
+  <button class="search-btn" onclick="toggleSearch()" aria-label="搜索">🔍</button>
+</div>
+<div class="search-box" id="searchBox"><input type="text" id="searchInput" placeholder="搜索知识点、公式、例题..." oninput="doSearch()"></div>
+<div class="mod-tabs" id="modTabs"></div>
+<div class="sub-tabs" id="subTabs"></div>
+<div class="progress" id="progress"></div>
 <div class="content" id="content"></div>
+<div class="ft">Made with ❤️ · 持续更新中</div>
 
 <script>
-// ========== DATA ==========
-const DATA = [{
-  name: '行测',
-  subjects: [{
-    name: '资料分析',
-    lessons: [
-      { title: '第一课 · 变化', formulas: [
-        '\\text{增量} = \\text{现期} - \\text{基期}',
-        '\\text{增速} = \\frac{\\text{增量}}{\\text{基期}} = \\frac{\\text{现期}}{\\text{基期}} - 1',
-        '\\text{基期} = \\frac{\\text{现期}}{1 + \\text{增速}}',
-        '\\text{现期} = \\text{基期} + \\text{增量} = \\text{基期} \\times (1 + r)',
-      ], concepts: [
-        { term: '现期', def: '材料中当前时间点的数值' },
-        { term: '基期', def: '对比参照的历史时间点数值' },
-        { term: '增速 (r)', def: '增量占基期的比例：r = (现期-基期)/基期' },
-        { term: '增量', def: '从基期到现期增加的绝对值：现期-基期' },
-      ], examples: [
-        { q: '(江苏2015) 2015年5月，国土资源部发布我国油气资源最新评价结果：我国常规天然气地质资源量68万亿立方米，可采资源量40万亿立方米。与2007年评价结果相比，分别增长94%和82%。\n\n问：2007年我国常规天然气可采资源量是多少？', a: '基期 = 现期/(1+增速) = 40/1.82 ≈ 22.0万亿立方米，选A。' },
-        { q: '2022年全国共有260家银行机构和29家理财公司累计新发理财产品2.94万只，同比下降38.23%，累计募集资金89.62万亿元，同比减少32.57万亿元。\n\n问：基期募集资金约为多少？', a: '基期 = 现期 - 增量 = 89.62 + 32.57 = 122.19万亿元。' },
-      ], tips: '增速 < 10% 时优先用化除为乘；增速在百分化附近用份数法；精度要求高时用放缩法。先粗后细，不要本末倒置。' },
-      { title: '第二课 · 加减与误差', formulas: [
-        '\\text{化除为乘：} \\frac{A}{1+r} \\approx A \\times (1-r) \\quad (|r| < 10\\%)',
-        '\\text{化除为乘修正：} \\frac{A}{1+r} \\approx A \\times (1-r+r^2)',
-        '\\text{份数法：增速} = a\\% \\Rightarrow \\text{基期}:\\text{现期} = 100:(100+a)',
-      ], concepts: [
-        { term: '化除为乘', def: '当增速绝对值较小时(<10%)，用乘法近似替代除法，A/(1+r) ≈ A×(1-r)' },
-        { term: '份数法', def: '增速转换为百化分，基期100份，增量a份，现期100+a份' },
-        { term: '放缩法', def: '分子分母同比例变化不影响结果，精度最高' },
-      ], examples: [
-        { q: '某省2023年GDP为5.67万亿元，同比增长3.2%。问：2022年该省GDP约为多少？', a: '化除为乘：5.67/(1+3.2%) ≈ 5.67×(1-3.2%) = 5.67×0.968 ≈ 5.49万亿元。' },
-      ], tips: '精度：放缩 ≈ 化除为乘 > 份数法 | 速度：份数法 ≈ 化除为乘 > 放缩 | 无最好方法，只有最合适的方法。' },
-      { title: '第三课 · 乘除变化', formulas: [
-        '\\text{乘积增长率：} r = r_1 + r_2 + r_1 \\times r_2',
-        '\\text{平均数增长率：} r = \\frac{r_{\\text{分子}} - r_{\\text{分母}}}{1 + r_{\\text{分母}}}',
-        '\\text{化除为乘：} \\frac{r_a - r_b}{1 + r_b} \\approx (r_a - r_b) \\times (1 - r_b)',
-      ], concepts: [
-        { term: '乘积增长率', def: '当C = A×B时，C的增速r = rA + rB + rA×rB（销售额 = 销量×单价等场景）' },
-        { term: '平均数增长率', def: '平均数（分式）的增速 = (分子增速-分母增速)/(1+分母增速)' },
-        { term: '以现比代基比', def: '判断基期比值大小时，可用现期比值代替，结合增速差快速判断' },
-      ], examples: [
-        { q: '2021年，各类镁产品出口47.72万吨，同比增长21.2%；出口单价4052.3美元/吨，同比增长65.8%。问：2021年我国各类镁产品出口总金额同比约增长多少？', a: '总金额 = 出口量×单价，用乘积增长率：r = 21.2% + 65.8% + 21.2%×65.8% ≈ 87% + 14% ≈ 101%。' },
-        { q: '2014年全国棉花播种面积4219.1千公顷，比2013年减少2.9%。棉花总产量616.1万吨，比2013年减产2.2%。问：2014年全国棉花单位面积产量比上年约？', a: '单位面积产量 = 产量/面积，平均数增长率 = (-2.2% - (-2.9%))/(1-2.9%) ≈ 0.7%/0.971 ≈ 0.72%，提高了约0.7%。选B。' },
-      ], tips: '乘积增长率 = 两次变化合为一次；平均数增长率核心是分子增速减分母增速。' },
-      { title: '第四课 · 比重类问题', formulas: [
-        '\\text{比重} = \\frac{\\text{部分量}}{\\text{整体量}}',
-        '\\text{两期比重差} = \\frac{A}{B} \\times \\frac{r_a - r_b}{1 + r_a}',
-        '\\text{比重增速} = \\frac{r_a - r_b}{1 + r_b}',
-      ], concepts: [
-        { term: '比重', def: '部分占整体的比例，自带百分号的平均数' },
-        { term: '两期比重差', def: '现期比重-基期比重，衡量比重上升/下降了多少个百分点' },
-        { term: '比重增速', def: '比重自身的变化率，即比重的增速' },
-        { term: '利润率', def: '资料分析中为收入利润率（利润/收入），数量运算中为成本利润率（利润/成本）' },
-      ], examples: [
-        { q: '2019年1-2月规模以上工业企业营业收入147855.1亿元，同比增长3.3%；利润总额7050.1亿元，同比增长14.0%。问：2019年1-2月营业收入利润率同比约？', a: '利润率 = 利润/收入，比重增速 = (14%-3.3%)/(1+3.3%) ≈ 10.7%/1.033 ≈ 10.4%，利润率同比上升约10.4%。' },
-      ], tips: '比重问题核心：判断部分增速与整体增速的大小关系，ra>rb则比重上升。' },
-      { title: '第五课 · 分式混合', formulas: [
-        '\\frac{m}{n} = \\frac{C-B}{A-C} \\quad \\text{（线段法）}',
-        '\\text{混合增速在两部分增速之间，靠近基期大的一侧}',
-        '\\text{距离比} = \\text{分母（基期）的反比}',
-      ], concepts: [
-        { term: '分式属性', def: '有分子有分母的属性：浓度、利润率、人均收入、增速等' },
-        { term: '线段法', def: '混合后属性值在两部分之间，到两端的距离与分母（基期）成反比' },
-        { term: '反比关系', def: '基期越大，混合后属性值越靠近该部分的属性值' },
-      ], examples: [
-        { q: '2015年河北省油料产量79.17万吨，增速31.2%；水果产量126.37万吨，增速2.4%。问：2015年河北省油料和水果的总产量比2014年增产？', a: '混合增速在2.4%~31.2%之间。水果基期约123 > 油料基期约60，所以混合增速更靠近2.4%。估算：(2.4%+31.2%)/2=16.8%，靠近水果侧，约11.9%。选B。' },
-      ], tips: '先判断混合范围排除选项，再根据基期大小判断偏向哪一侧。' },
-      { title: '第六课 · 容斥问题', formulas: [
-        '\\text{属性A与属性B重叠比例范围：} [a\\%+b\\%-100\\%, \\min(a\\%,b\\%)]',
-        '\\text{条件：} a\\%+b\\% > 100\\%',
-      ], concepts: [
-        { term: '容斥问题', def: '讨论统计数据中多种属性重叠性，即"既是A又是B"的比例范围' },
-        { term: '最小值', def: '属性B尽量放在A外部（100%-a%中），剩余必须重叠的是a%+b%-100%' },
-        { term: '最大值', def: '属性B全部在属性A内部，即min(a%, b%)' },
-      ], examples: [
-        { q: '某市调查显示，70.2%的居民有餐饮消费，27.9%的居民去旅游。问：既餐饮消费又旅游的居民比例范围？', a: '70.2%+27.9%-100% = -1.9% < 0，所以最小值为0；最大值为27.9%。范围：[0, 27.9%]。' },
-      ], tips: '记忆公式 [a%+b%-100%, min(a%,b%)]，当a%+b%≤100%时最小值为0。' },
-      { title: '第七课 · 分式比较大小', formulas: [
-        '\\frac{A}{A+B} \\text{越大} \\iff B \\text{越小} \\iff \\frac{A}{B} \\text{越大}',
-        '\\text{全体} = A + B \\text{时，} \\frac{A}{A+B} \\text{与} \\frac{A}{B} \\text{单调性一致}',
-      ], concepts: [
-        { term: '混合型分式比较', def: '全量=部分A+部分B时，比较A/(A+B)即比较A/B的大小关系' },
-        { term: '核心思想', def: '避免多余的加减运算，直接从题干数据判断分式大小' },
-      ], examples: [
-        { q: '2013年民政部门接收社会捐赠款107.6亿元，社会组织接收458.8亿元。2014年民政部门接收79.6亿元，社会组织接收524.9亿元。问：2014年民政部门接收捐赠款占总数比重较2013年如何变化？', a: '民政占比 = 民政/(民政+社会组织) = 1/(1+社会组织/民政)。2014年社会组织/民政更大，所以民政占比更小，即下降。' },
-      ], tips: 'A/(A+B)大 ⇔ B/A小 ⇔ A/B大。避免计算，直接看比例关系。' },
-      { title: '第八课 · 年均变化问题', formulas: [
-        '\\text{年均增量} = \\frac{\\text{现期} - \\text{基期}}{\\text{现期年份} - \\text{基期年份}}',
-        '\\text{年均增速：} (1+r)^n = \\frac{\\text{现期}}{\\text{基期}}',
-        '\\text{年均增速近似：} r \\approx \\frac{\\text{总增速}}{n}',
-      ], concepts: [
-        { term: '年均增量', def: '从基期到现期平均每年的增量（等差数列思维）' },
-        { term: '年均增速', def: '复合增长率，(1+r)^n = 现期/基期（等比数列思维）' },
-        { term: '注意', def: '各省计算规则不同（比如基期年份有的算有的不算），需参照本省考情' },
-      ], examples: [
-        { q: '（2024青海）2019-2022年全国体育场地数量：2019年354.44万个，2022年422.68万个。问：2019-2022年全国体育场地数量年均增量约为？', a: '年均增量 = (422.68-354.44)/(2022-2019) = 68.24/3 ≈ 22.75万个。' },
-      ], tips: '年均增量用算术平均（减完除n），年均增速用几何平均（开n次方）。省级考情决定基期年份是否计入。' },
-      { title: '第九课 · 增长贡献率与拉动增长', formulas: [
-        '\\text{增长贡献率} = \\frac{\\text{部分增量}}{\\text{整体增量}}',
-        '\\text{拉动增长率} = \\frac{\\text{部分增量}}{\\text{整体基期}}',
-        '\\text{拉动增长率} = \\text{贡献率} \\times \\text{整体增速}',
-      ], concepts: [
-        { term: '增长贡献率', def: '部分增量占整体增量的比重——"谁贡献了多少增长"' },
-        { term: '拉动增长率', def: '部分增量占整体基期的比重——"谁拉动了多少个百分点"' },
-      ], examples: [
-        { q: '"十一五"期间，农村居民人均纯收入由2005年3255元提高到2010年5919元，增加2664元。2010年工资性收入比2005年增加1257元。问：工资性收入对人均纯收入的增长贡献率？', a: '贡献率 = 1257/2664 ≈ 47.2%。拉动增长率 = 1257/3255 ≈ 38.6个百分点。验证：拉动增长率 = 贡献率 × 整体增速 = 47.2% × (2664/3255) ≈ 47.2% × 81.8% ≈ 38.6%。' },
-      ], tips: '贡献率的分母是增量，拉动增长率的分母是基期。两者差一个整体增速的倍数关系。' },
-      { title: '第十课 · 假设代入思想', formulas: [
-        '\\text{假设增量} = a \\Rightarrow \\text{验算：基期} = \\text{现期} - a, \\text{增量} = \\text{基期} \\times r',
-        '\\text{若验算增量} < \\text{假设增量，则实际增量} < \\text{假设增量}',
-        '\\text{若验算增量} > \\text{假设增量，则实际增量} > \\text{假设增量}',
-      ], concepts: [
-        { term: '代入思想', def: '假设一个方便计算的值代入，然后验算与实际值的差距，判断真实值范围' },
-        { term: '增量验算', def: '假设增量 → 倒推基期 → 用基期×增速算验算增量 → 与实际比较 → 判断方向' },
-      ], examples: [
-        { q: '（23江西）2021年全国城市供水总量673.34亿立方米，同比增长6.96%；供水管道长度105.99万公里，同比增长5.26%。问：2021年供水管道长度比2020年增长约？', a: '假设增量=5.99，基期=100，验算增量=100×5.26%=5.26。实际现期105.99>验算现期105.26，说明假设增量偏大，实际增量在5.26~5.99之间，接近5.3。选B。' },
-      ], tips: '本质是"猜一个值，验证偏差方向"。适用于选项差距小、不便直接计算的情况。' },
-      { title: '第十一课 · 常见"坑位"', formulas: [
-        '\\text{增速/增幅/涨幅} \\neq \\text{降速/降幅/跌幅（后者只看绝对值）}',
-        '\\text{变化幅度/变化量（上升下降都只看绝对值）}',
-        '\\text{增加值（GDP中的概念，不等于增量！）}',
-      ], concepts: [
-        { term: '增速 vs 降幅', def: '增速可正可负含符号；降速/降幅/跌幅只看绝对值（只有下降才有）' },
-        { term: '变化幅度', def: '上升下降都只看绝对值，不区分方向' },
-        { term: '增加值', def: 'GDP核算概念，指一定时期内生产活动的增加值，不是增量' },
-        { term: '时间坑', def: '注意是"同比"还是"环比"，是"1-X月"还是"X月"' },
-        { term: '主体坑', def: '看清题干问的是哪个主体，和材料中的主体是否一致（如"城镇"vs"城乡"）' },
-      ], examples: [
-        { q: '某指标增速为-5%，降幅为3%。问：该指标的实际增速为？', a: '增速已经是-5%（下降了5%）。降幅3%指下降幅度（绝对值），对应实际增速为-3%。两者是不同的概念，不能直接比较。' },
-      ], tips: '资料分析最大的坑往往不是计算，而是"看错"——时间看错、主体看错、单位看错导致的低级错误。' },
+// ==================== DATA ====================
+const D=[{
+  name:'行测',icon:'📊',subjects:[{
+    name:'资料分析', lessons:[
+{title:'第一课 · 变化', key:'现期、基期、增速、增量的概念与换算', formulas:[
+  '\\Delta = B - A \\quad (\\text{现期}-\\text{基期})',
+  'r = \\frac{\\Delta}{A} = \\frac{B}{A} - 1',
+  'A = \\frac{B}{1+r} \\quad B = A + \\Delta = A(1+r)',
+],concepts:[
+  {t:'现期 (B)',d:'材料中当前时间点的数值，题干直接或间接给出的"现在"的量'},
+  {t:'基期 (A)',d:'历史对比时间点的数值——大部分题目需要我们通过现期和增速/增量反推基期'},
+  {t:'增速 (r)',d:'增量在基期中的占比：r = (现期-基期)/基期 × 100%。可正可负'},
+  {t:'增量 (Δ)',d:'现期比基期多出的绝对值：Δ = 现期 - 基期 = 基期 × r'},
+],examples:[
+{q:'（江苏2015）2015年5月，我国常规天然气可采资源量40万亿立方米。与2007年评价结果相比增长82%。\n\n问：2007年我国常规天然气可采资源量是多少？\nA.22.0万亿  B.32.6万亿  C.32.8万亿  D.35.4万亿',a:'A = B/(1+r) = 40/1.82 ≈ 22.0万亿。直除：40÷1.82≈21.98，最接近A。\n\n关键：长除法时 1.82×22=40.04，验证选A。'},
+{q:'2022年全国累计新发理财产品2.94万只，同比下降38.23%；累计募集资金89.62万亿元，同比减少32.57万亿元。\n\n问：基期理财产品数量约为多少万只？基期募集资金约为多少万亿元？',a:'基期数量：A = B/(1+r) = 2.94/(1-38.23%) = 2.94/0.6177 ≈ 4.76万只。\n基期募集资金：A = B + 减少额 = 89.62 + 32.57 = 122.19万亿元。\n\n注意：给了增量（减少量）时直接用加减法，不要绕路用增速公式。'},
+{q:'（2020浙江）2019年全年V市交通运输、仓储和邮政业增加值398亿元，增长4.4%。\n\n问：2018年全年V市该增加值约为多少亿元？\nA.376.8  B.381.2  C.385.9  D.390.5',a:'放缩法：398/1.044 ≈ (398×0.956)/1 = 380.4。\n或化除为乘：398×(1-4.4%) = 398×0.956 ≈ 380.4。\n实际值 = 398/1.044 = 381.2。选B。\n\n💡 放缩法估算基期精度很高，此处偏差<1%，足以选出正确答案。'},
+],tips:'估算三法取舍：① 增速小(<10%)→化除为乘最快 ② 增速在百化分附近→份数法 ③ 精度要求高→放缩法。原则：先粗后细，不要本末倒置追求精度。放缩法算基期时注意：分母调整比例越小越精准。'},
+
+{title:'第二课 · 加减与误差', key:'尾数法、误差补偿、化除为乘修正', formulas:[
+  '\\frac{A}{1+r} \\approx A(1-r) \\quad (|r|<10\\%)',
+  '\\frac{A}{1+r} \\approx A(1-r+r^2) \\quad (\\text{更精确})',
+  '\\text{份数法：增速}=a\\% \\Rightarrow A:B:\\Delta = 100:(100+a):a',
+],concepts:[
+  {t:'化除为乘',d:'当|r|<10%时，A/(1+r)≈A(1-r)。如398/1.044≈398×0.956。本质是泰勒展开的一阶近似'},
+  {t:'误差补偿',d:'化除为乘略偏小，必要时加回r²项修正。补偿误差只是"补偿"，不需要完美控制精度'},
+  {t:'份数法（百化分）',d:'将增速转换为分数：如25%→基期4份:增量1份:现期5份。快速判断各量之间倍数关系'},
+  {t:'尾数法',d:'选项精度与数据精度一致时（未经过截位），通过尾数累加/累减直接锁定选项'},
+],examples:[
+{q:'（2020-2024年）全国规模以上工业汽车总产量数据如下：2020年2532.5万辆、2021年2652.8万辆、2022年2718.0万辆、2023年3011.3万辆、2024年3155.9万辆。\n\n问：2020-2024年全国规模以上工业汽车总产量是多少？\nA.12637.8万辆  B.13025.6万辆  C.13686.9万辆  D.14070.5万辆',a:'选项位数与数据位数相同且尾数各不相同→尾数法。\n5+8+0+3+9=25→尾数为5。选D。\n\n省了5次四位数加法，5秒出答案。'},
+{q:'某省2023年GDP为5.67万亿元，同比增长3.2%。\n\n问：2022年该省GDP约为多少？',a:'化除为乘：5.67×0.968=5.49万亿元。\n精确值：5.67/1.032=5.494。偏差不到0.1%。'},
+],tips:'估算精度排序：放缩≈化除为乘(修正) > 化除为乘 > 份数法。速度则反之。无最好方法，只有最合适的——关键是快速判断场景选对方法。'},
+
+{title:'第三课 · 乘除变化', key:'乘积增长率、平均数增长率、环比增速比较', formulas:[
+  'r_{AB} = r_A + r_B + r_A \\cdot r_B \\quad (C=A\\times B)',
+  'r_{\\text{平均}} = \\frac{r_{\\text{分子}} - r_{\\text{分母}}}{1 + r_{\\text{分母}}}',
+  '\\text{化除为乘：} r_{\\text{平均}} \\approx (r_a - r_b)(1 - r_b)',
+],concepts:[
+  {t:'乘积增长率',d:'当C=A×B时（如销售额=销量×单价），C的增速r = rA+rB+rA×rB。将两次变化合为一次'},
+  {t:'平均数增长率',d:'平均数=分子/分母，其增速=(分子增速-分母增速)/(1+分母增速)。常考单位面积产量、人均收入等'},
+  {t:'以现比代基比',d:'比较基期比值大小时：若分子增速>分母增速，则基期比<现期比；反之亦然。避免重复计算'},
+  {t:'环比增速比较',d:'当月环比增速低于上年同期⇔当月同比增速低于上月同比增速。不需要真的算出环比'},
+],examples:[
+{q:'2021年各类镁产品出口47.72万吨，同比增长21.2%；出口单价4052.3美元/吨，同比增长65.8%。\n\n问：2021年我国各类镁产品出口总金额同比约增长多少？',a:'总金额=出口量×单价，用乘积增长率：\nr = 21.2%+65.8%+21.2%×65.8% ≈ 87%+14% = 101%。\n\n验证：21.2%×65.8%≈13.9%，合计约100.9%。'},
+{q:'2014年全国棉花播种面积4219.1千公顷，同比减少2.9%；总产量616.1万吨，同比减产2.2%。\n\n问：2014年全国棉花单位面积产量比上年约？\nA.提高5.1%  B.提高0.7%  C.降低5.1%  D.降低0.7%',a:'单产=产量/面积。平均数增长率：\n(-2.2%-(-2.9%))/(1-2.9%) = 0.7%/0.971 ≈ 0.72%。\n\n提高了约0.7%，选B。技巧：分子减分母的增速差只有0.7%，除以接近1的数，结果就在0.7%附近。'},
+{q:'2020年H省秋粮生产成本：机耕增速0.3%、机播增速6.4%、机收增速-2%、排灌增速-12%。\n问：增量最高的是？增量最低的是？',a:'机耕增速>0，是唯一正增长，增量最高。\n排灌增速-12%是机收增速-2%的6倍，而现期排灌仅是机收的2.5倍→排灌增量绝对值更大（因为是负的，所以"更低"）。\n\n💡 增量比较：先看增速正负，再看增速与现期的乘积大小关系。只有弱势方增速也低时，才需要修正。'},
+],tips:'乘积增长率核心：r≈r₁+r₂（交叉项通常<5%可估算）。平均数增长率核心：分子增速-分母增速，除以接近1的数可近似忽略。'},
+
+{title:'第四课 · 比重类问题', key:'比重计算、两期比重差、比重增速、利润率', formulas:[
+  '\\text{比重} = \\frac{\\text{部分}}{\\text{整体}}',
+  '\\text{两期比重差} = \\frac{A}{B} \\cdot \\frac{r_a - r_b}{1+r_a} \\quad (\\text{百分点})',
+  '\\text{比重增速} = \\frac{r_a - r_b}{1+r_b}',
+  '\\text{资料分析利润率} = \\frac{\\text{利润}}{\\text{收入}} \\quad (\\text{收入利润率})',
+],concepts:[
+  {t:'比重判断',d:'部分增速>整体增速 → 比重上升；部分增速<整体增速 → 比重下降。不动笔，心算决定方向'},
+  {t:'两期比重差',d:'现期比重-基期比重。单位是百分点。公式=A/B×(ra-rb)/(1+ra)。通常选项差距大，可估算'},
+  {t:'基期比重',d:'现期比重/(1+比重增速)。判断方向：分子增速>分母增速则基期比<现期比'},
+  {t:'利润率',d:'资料分析中一般为收入利润率=利润/收入（自带百分号的平均数）。数量运算中才是成本利润率'},
+],examples:[
+{q:'2021年前三季度，全国6.4万家规模以上文化企业营业收入同比增长21.8%。其中：新闻信息服务22.1%、创意设计服务24.0%、文化传播渠道30.1%、文化娱乐休闲服务35.3%、文化消费终端生产22.0%。\n\n问：占全国规模以上文化企业营业收入比重增加的行业有几个？\nA.3个  B.4个  C.5个  D.6个',a:'部分增速>整体增速21.8%则比重上升。\n新闻22.1%✓ 创意24.0%✓ 传播30.1%✓ 娱乐35.3%✓ 终端22.0%✓\n共5个。选C。\n\n不动笔，纯心算比较大小即可。'},
+{q:'（河北2013）2011年图书进口额11666.91万美元，同比增长24.09%；少儿读物进口额629.25万美元，同比增长67.66%。\n\n问：2010年少儿读物进口额占图书进口总额的？\nA.4.0%  B.5.4%  C.8.2%  D.8.6%',a:'现期占比=629.25/11666.91≈5.4%。\n分子增速67.66%>分母增速24.09%→比重增速>0→基期比<现期比5.4%。\n选A（4.0%）。\n\n💡 无需精算基期比，只需判断方向+选项排除。'},
+],tips:'比重三问：①方向→ra vs rb ②差值→A/B×(ra-rb) ③基期→现期比/(1+比重增速)。先方向后数值，选项差距大时大胆估。'},
+
+{title:'第五课 · 分式混合', key:'线段法、混合增速、基期差估算、反比关系', formulas:[
+  '\\frac{m}{n} = \\frac{C-B}{A-C} \\quad \\text{距离比=分母(基期)反比}',
+  '\\text{混合增速在两部之间，靠近基期大的一侧}',
+  'A-B+B=A \\Rightarrow \\text{三者构成线段混合关系}',
+],concepts:[
+  {t:'分式属性',d:'有分子分母的属性——浓度（盐/水）、利润率（利润/成本）、人均收入（收入/人数）、增速（增量/基期）'},
+  {t:'线段法',d:'两个部分混合后，整体属性值在两部之间。到两端的距离之比=分母（基期）的反比'},
+  {t:'基期差估算',d:'A-B+B=A→A增速在B增速与(B差值)增速之间。可快速判断差值的增速范围，排除明显不对的选项'},
+],examples:[
+{q:'2015年河北省油料产量79.17万吨，增速31.2%；水果产量126.37万吨，增速2.4%。\n\n问：油料和水果总产量比上年增长？\nA.2.3%  B.11.9%  C.16.9%  D.24.9%',a:'混合增速在2.4%~31.2%之间，排除A、D。\n水果基期≈123（分母大），油料基期≈60→混合增速更靠近水果2.4%。\n(2.4%+31.2%)/2=16.8%。偏向水果，约在10-14%。选B。'},
+{q:'（2015上海）2013年1-11月，全国汽车商品进出口总额1458.72亿美元，同比增长4.1%。进口745.63亿美元，增长3.2%；出口713.09亿美元，增长5.2%。\n\n问：2012年1-11月，贸易呈现？\nA.顺差32.5亿  B.顺差44.7亿  C.逆差32.5亿  D.逆差44.7亿',a:'13年进口745.63>出口713.09→逆差32.54亿。A、C为现期迷惑项，排除。\n逆差+出口=进口→三者线段混合。出口/逆差≈20倍→逆差增速远小于0。\n基期逆差>现期32.5→选D（44.7亿）。\n\n💡 线段法精髓：无需精确计算，利用数量级比例关系直接排除。'},
+],tips:'线段时间：先定范围（两数之间），再判断偏向哪侧（基期大的一侧）。基期差估算注意：差值往往与另一部分数量级差距大，小心现期比代替基期比的偏差。'},
+
+{title:'第六课 · 容斥问题', key:'二属性容斥、三属性容斥、铺砖思维', formulas:[
+  '\\text{同时A且B：}[a\\%+b\\%-100\\%,\\min(a\\%,b\\%)]',
+  '\\text{同时A且B且C：}[a\\%+b\\%+c\\%-200\\%,\\min(a\\%,b\\%,c\\%)]',
+],concepts:[
+  {t:'容斥本质',d:'讨论统计数据中多种属性重叠——"既是A又是B"的比例范围，而非精确值'},
+  {t:'最小值原理',d:'尽量让B的人分布在A外部(1-a%)中，剩下必须放在A内部的是a%+b%-100%'},
+  {t:'铺砖思维',d:'每个统计对象=一个格子，每种属性=一块砖头。根据题目要求分配砖头到格子中'},
+],examples:[
+{q:'某调查1105人：2013年Q1，选择"欺诈类"占比68.3%，选择"网站推广类"占比49.3%。\n\n问：同时选择这两类的人数可能是？\nA.315人  B.185人  C.135人  D.95人',a:'同时选择范围：[68.3%+49.3%-100%, 49.3%]=[17.6%,49.3%]。\n1105×17.6%≈194人，1105×49.3%≈545人。\n范围[194,545]，只有A（315）在范围内。\n\n快速技巧：max=49.3%×1105≈545，远超BCD选项→直接选A。'},
+],tips:'记口诀：[a+b-100, min(a,b)]。当a+b≤100%时最小值为0。三属性公式类推：[a+b+c-200, min(a,b,c)]。更多的时候用"铺砖"思路现场推导比背公式更靠谱。'},
+
+{title:'第七课 · 分式比较大小', key:'混合型分式比较、避免多余运算', formulas:[
+  '\\frac{A}{A+B} \\uparrow \\iff \\frac{B}{A} \\downarrow \\iff \\frac{A}{B} \\uparrow',
+  '\\text{全量}=A+B\\text{时，}\\frac{A}{A+B}\\text{与}\\frac{A}{B}\\text{趋势一致}',
+],concepts:[
+  {t:'核心思想',d:'全量=部分A+部分B时，A/(A+B)的大小关系与A/B的大小关系单调性一致。避免多余的加减运算'},
+  {t:'应用场景',d:'民政捐赠/总捐赠、男性/全体、某品牌/总销量——只要涉及"一部分占全体"的比较'},
+],examples:[
+{q:'2013年民政部门接收社会捐赠款107.6亿元，社会组织接收458.8亿元。\n2014年民政部门接收79.6亿元，社会组织接收524.9亿元。\n\n问：2014年民政部门接收捐赠款占总数的比重，与2013年相比？',a:'民政占比=民政/(民政+社会组织)=1/(1+社会组织/民政)。\n2013年：社会组织/民政=458.8/107.6≈4.26\n2014年：524.9/79.6≈6.59\n→2014年比值更大→民政占比更小→比重下降了。\n\n💡 没有算过一次完整的占比值，纯比较大小关系。'},
+],tips:'A/(A+B)大 ⇔ B/A小 ⇔ A/B大。三句话的等价关系，记住一个就能推导其他。核心价值：省去加法和除法，只做比例比较。'},
+
+{title:'第八课 · 年均变化问题', key:'年均增量、年均增速、远期估算、省份差异', formulas:[
+  '\\text{年均增量} = \\frac{B_{\\text{终}} - A_{\\text{始}}}{\\text{年份差}}',
+  '(1+r_{\\text{年均}})^n = \\frac{B}{A} \\quad \\text{（复合增长）}',
+  '\\text{远期值} = B \\times \\frac{B}{A} \\quad \\text{（年均增速不变时）}',
+],concepts:[
+  {t:'年均增量',d:'从基期到现期平均每年的增量（等差数列思维）。公式=(现期-基期)/年份差。注：不同省份对年份差不一致'},
+  {t:'年均增速',d:'复合增长率（等比数列思维），(1+r)^n=现期/基期。注意区分"十一五"(2006-2010)和"十二五"(2011-2015)等时期'},
+  {t:'年均增量不变',d:'保持增量不变时，T=(目标值-现期)/增量。增量=速度，现期/未来值=路程'},
+  {t:'江苏特色',d:'江苏省考题中年份基期往往前推一个月/一年，需特别关注题干中"基期"的界定方式'},
+],examples:[
+{q:'（2024青海）2019年全国体育场地数量354.44万个，2022年为422.68万个。\n\n问：2019-2022年全国体育场地数量年均增量约为？',a:'年均增量=(422.68-354.44)/(2022-2019)=68.24/3≈22.75万个。'},
+{q:'（2013江苏）"十一五"期间（2006-2010年）江苏税收收入从2005年1107亿元增至2010年3313亿元。若"十二五"期间保持相同年均增速，则2015年税收收入预计为？\nA.5075  B.7902  C.9915  D.12246',a:'十一五增速：3313/1107≈3倍。保持相同增速→十二五再变3倍。\n3313×3=9939≈9915。选C。\n\n💡 技巧：现期/基期=倍数，保持增速→再乘一次倍数。不需要开方算年均增速！'},
+{q:'（2016江苏）2015年2-6月水力发电量月均增速与1月（565）到6月（1028）相同，则11月可达？\nA.1390  B.1870  C.2063  D.2239亿千瓦时',a:'1月→6月：1028/565≈1.82倍。保持增速→6月→11月（也隔5个月）：1028×1.82≈1870。选B。'},
+],tips:'年均增量=算术平均（减完除n）；年均增速=几何平均（开n次方）。远期估算=现期×倍数。江苏题注意基期前推！'},
+
+{title:'第九课 · 增长贡献率与拉动增长', key:'贡献率、拉动增长率、两者的转换关系', formulas:[
+  '\\text{贡献率} = \\frac{\\Delta_{\\text{部分}}}{\\Delta_{\\text{整体}}}',
+  '\\text{拉动增长率} = \\frac{\\Delta_{\\text{部分}}}{A_{\\text{整体}}}',
+  '\\text{拉动增长率} = \\text{贡献率} \\times r_{\\text{整体}}',
+],concepts:[
+  {t:'贡献率',d:'部分增量占整体增量的比重——"整体增量中有百分之多少是这个部分带来的"'},
+  {t:'拉动增长率',d:'部分增量占整体基期的比重——"这个部分拉动整体增长了多少个百分点"'},
+  {t:'关系',d:'两者差一个整体增速的倍数。因为整体增速=整体增量/整体基期，所以拉动增长率=贡献率×整体增速'},
+],examples:[
+{q:'"十一五"期间，农村居民人均纯收入从2005年3255元增至2010年5919元（+2664元）。工资性收入从2005年1174元增至2010年2431元（+1257元）。\n\n问：工资性收入对人均纯收入的增长贡献率？拉动增长多少个百分点？',a:'贡献率=1257/2664≈47.2%（工资性收入贡献了整体增长的近一半）。\n拉动增长率=1257/3255≈38.6个百分点。\n验证：贡献率×整体增速=47.2%×(2664/3255)=47.2%×81.8%≈38.6%。✓'},
+],tips:'贡献率分母是增量，拉动增长率分母是基期。记忆：贡献→增量（都是"增加"的），拉动→基期（往"回"拉的）。'},
+
+{title:'第十课 · 假设代入思想', key:'代入验算、增量验算方向、选项逼近', formulas:[
+  '\\text{假设}\\Delta=a \\Rightarrow \\text{基期}=B-a \\Rightarrow \\text{验算}\\Delta\'= \\text{基期}\\times r',
+  '\\Delta\' < a \\Rightarrow \\text{实际}\\Delta < a \\quad \\text{（假设偏大）}',
+  '\\Delta\' > a \\Rightarrow \\text{实际}\\Delta > a \\quad \\text{（假设偏小）}',
+],concepts:[
+  {t:'核心思想',d:'猜一个方便算的值→验算与实际差距→判断真实值在假设值的哪一侧。本质是"二分法"的直觉版'},
+  {t:'增量验算',d:'假设增量→倒推基期→用基期×增速算验算增量→与实际现期比较→判断假设偏大还是偏小'},
+],examples:[
+{q:'（2023江西）2021年全国城市供水管道长度105.99万公里，同比增长5.26%。\n\n问：2021年全国城市供水管道长度比2020年增长约？\nA.4.5万公里  B.5.3万公里  C.5.6万公里  D.6万公里',a:'假设增量=5.99（与增速5.26%凑巧），则基期=105.99-5.99=100。\n验算增量=100×5.26%=5.26。\n验算现期=105.26<实际105.99→假设增量偏大。\n实际增量在5.26~5.99之间，靠近5.3。选B。\n\n💡 选择"漂亮的"数字假设（100、整数等），验算一次就知道方向。'},
+],tips:'假设代入三步骤：①假设一个方便的值 ②用不变的参数（如增速）验算 ③看偏差方向，判断真实值在哪一侧。适用于选项差距小、不便精算的场景。'},
+
+{title:'第十一课 · 常见"坑位"', key:'表述陷阱、时间主体单位坑、概念辨析', formulas:[],concepts:[
+  {t:'增速vs降幅','d':'增速有正负；降速/降幅/跌幅只看绝对值（只有下降才有）。变化幅度/变化量上升下降都看绝对值'},
+  {t:'名义vs实际','d':'名义增速包含价格因素；实际增速扣除物价。题干要看清是"名义增长"还是"实际增长"'},
+  {t:'百分号vs百分点','d':'增速通常用%，比重变化用百分点。恩格尔系数32.9%"提高0.9个百分点"是增量，非增速0.9%'},
+  {t:'增加值≠增量','d':'GDP核算中的"增加值"指一定时期生产活动的增加值，是一个产值概念，不是"增长量"'},
+  {t:'时间坑','d':'同比vs环比、1-X月vsX月、年末vs年初。看清楚"从哪年到哪年"'},
+  {t:'主体坑','d':'城镇vs城乡、规模以上vs全部、进口vs出口。每个"限定词"都可能是坑'},
+],examples:[
+{q:'（山东2007）判断以下选项正误：\nA.2007年全省人口自然增长率为5.0%\nB.2007年城镇恩格尔系数提高了0.9%\nC.2007年城镇居民人均可支配收入实际增长17.0%\nD.2007年城镇居民人均工资性收入增长额高于人均消费性支出增长额',a:'材料：自然增长率5.0‰（千分号！）→A把‰当%写，错。\n恩格尔系数提高0.9个百分点（增量非增速）→B把百分点当%，错。\n实际增长12.1%≠名义17.0%→C混淆名义与实际，错。\nD：工资性11814×13.1%≈1548 > 消费9667×14.1%≈1363 → 正确。\n\n💡 这道题把常见坑位几乎全踩了一遍。'},
+],tips:'资料分析最大的失分不是算不对，而是"看错"——时间看错、主体看错、单位看错、概念混淆。每做一道题先花5秒确认：时间对吗？主体对吗？单位对吗？概念对吗？'}
     ]
-  }, {
-    name: '数量关系', lessons: []
-  }, {
-    name: '判断推理', lessons: []
-  }, {
-    name: '言语理解', lessons: []
-  }, {
-    name: '常识判断', lessons: []
+  },{
+    name:'数量关系',lessons:[]
+  },{
+    name:'判断推理',lessons:[]
+  },{
+    name:'言语理解',lessons:[]
+  },{
+    name:'常识判断',lessons:[]
   }]
-}, {
-  name: '申论',
-  subjects: [
-    { name: '归纳概括', lessons: [] },
-    { name: '综合分析', lessons: [] },
-    { name: '对策建议', lessons: [] },
-    { name: '大作文', lessons: [] },
+},{
+  name:'申论',icon:'📝',subjects:[
+    {name:'归纳概括',lessons:[]},{name:'综合分析',lessons:[]},
+    {name:'对策建议',lessons:[]},{name:'大作文',lessons:[]}
   ]
 }];
 
-// ========== RENDER ==========
-let currentModule = 0;
-let currentSubject = 0;
+// ==================== STATE ====================
+let curMod=0,curSub=0,openLessons={},showAns={};
 
-const $moduleTabs = document.getElementById('moduleTabs');
-const $subjectTabs = document.getElementById('subjectTabs');
-const $content = document.getElementById('content');
+// ==================== RENDER ====================
+const $m=id=>document.getElementById(id);
 
-function renderModuleTabs() {
-  $moduleTabs.innerHTML = DATA.map((m, i) =>
-    `<span class="module-tab${i===currentModule?' active':''}" onclick="selectModule(${i})">${m.name}</span>`
-  ).join('');
+function rModTabs(){
+  $m('modTabs').innerHTML=D.map((m,i)=>`<span class="mod-tab${i===curMod?' active':''}" onclick="selMod(${i})">${m.icon||''} ${m.name}</span>`).join('');
+}
+function selMod(i){curMod=i;curSub=0;rModTabs();rSubTabs();rContent();}
+
+function rSubTabs(){
+  const s=D[curMod].subjects;
+  if(s.length<=1){$m('subTabs').innerHTML='';return}
+  $m('subTabs').innerHTML=s.map((x,i)=>`<span class="sub-tab${i===curSub?' active':''}" onclick="selSub(${i})">${x.name}</span>`).join('');
+}
+function selSub(i){curSub=i;rSubTabs();rContent()}
+
+function toggleSearch(){
+  const b=$m('searchBox');b.classList.toggle('show');
+  if(b.classList.contains('show')){setTimeout(()=>$m('searchInput').focus(),100)}
+  else{$m('searchInput').value='';doSearch()}
 }
 
-function selectModule(i) {
-  currentModule = i; currentSubject = 0;
-  renderModuleTabs();
-  renderSubjectTabs();
-  renderContent();
-}
-
-function renderSubjectTabs() {
-  const subs = DATA[currentModule].subjects;
-  if (subs.length <= 1) { $subjectTabs.innerHTML = ''; return; }
-  $subjectTabs.innerHTML = subs.map((s, i) =>
-    `<span class="subject-tab${i===currentSubject?' active':''}" onclick="selectSubject(${i})">${s.name}</span>`
-  ).join('');
-}
-
-function selectSubject(i) {
-  currentSubject = i;
-  renderSubjectTabs();
-  renderContent();
-}
-
-function renderContent() {
-  const lessons = DATA[currentModule].subjects[currentSubject].lessons;
-  if (!lessons.length) {
-    $content.innerHTML = '<div class="empty-state"><div class="icon">📝</div><div>内容正在整理中，敬请期待...</div></div>';
-    return;
-  }
-
-  $content.innerHTML = lessons.map((l, i) => `
-    <div class="lesson-card">
-      <div class="lesson-header" onclick="toggleLesson(this)" data-idx="${i}">
-        <span class="lesson-title">${l.title}</span>
-        <span class="lesson-arrow">▼</span>
-      </div>
-      <div class="lesson-body">
-        ${l.concepts ? `
-        <div class="section">
-          <div class="section-title">📌 核心概念</div>
-          <table class="concept-table">
-            ${l.concepts.map(c => `<tr><td>${c.term}</td><td>${c.def}</td></tr>`).join('')}
-          </table>
-        </div>` : ''}
-
-        ${l.formulas ? `
-        <div class="section">
-          <div class="section-title">🔢 核心公式</div>
-          <ul class="formula-list">
-            ${l.formulas.map(f => `<li class="formula-item" data-latex="${escapeHtml(f)}"></li>`).join('')}
-          </ul>
-        </div>` : ''}
-
-        ${l.examples ? `
-        <div class="section">
-          <div class="section-title">📝 经典例题</div>
-          ${l.examples.map((ex, ei) => `
-            <div class="example">
-              <div class="example-q">${ex.q.replace(/\n/g, '<br>')}</div>
-              <div class="example-a" id="ex-a-${i}-${ei}">${ex.a}</div>
-              <button class="example-toggle" onclick="toggleExample('ex-a-${i}-${ei}', this)">👆 点击查看答案</button>
-            </div>
-          `).join('')}
-        </div>` : ''}
-
-        ${l.tips ? `<div class="tip">💡 ${l.tips}</div>` : ''}
-      </div>
-    </div>
-  `).join('');
-
-  // Render KaTeX
-  document.querySelectorAll('.formula-item[data-latex]').forEach(el => {
-    try { katex.render(el.dataset.latex, el, { throwOnError: false, displayMode: true }); }
-    catch(e) { el.textContent = el.dataset.latex; }
+function doSearch(){
+  const q=$m('searchInput').value.trim().toLowerCase();
+  document.querySelectorAll('.card').forEach(c=>{
+    if(!q){c.style.display='';return}
+    const txt=c.textContent.toLowerCase();
+    c.style.display=txt.includes(q)?'':'none';
+  });
+  // highlight
+  document.querySelectorAll('mark').forEach(m=>{const p=m.parentNode;p.replaceChild(document.createTextNode(m.textContent),m)});
+  if(q) document.querySelectorAll('.card').forEach(c=>{
+    if(c.style.display==='none')return;
+    const walk=document.createTreeWalker(c,NodeFilter.SHOW_TEXT);
+    const nodes=[];let n;
+    while(n=walk.nextNode())nodes.push(n);
+    nodes.forEach(n=>{
+      const i=n.textContent.toLowerCase().indexOf(q);
+      if(i>=0){
+        const span=document.createElement('span');span.innerHTML=n.textContent.substring(0,i)+
+        '<mark>'+n.textContent.substring(i,i+q.length)+'</mark>'+n.textContent.substring(i+q.length);
+        n.parentNode.replaceChild(span,n);
+      }
+    });
   });
 }
 
-function escapeHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function rContent(){
+  const lessons=D[curMod].subjects[curSub].lessons;
+  if(!lessons.length){
+    $m('content').innerHTML='<div class="empty"><div class="icon">📝</div><p>内容整理中，敬请期待</p></div>';
+    $m('progress').innerHTML='';return;
+  }
+  const done=Object.values(openLessons).filter(Boolean).length;
+  $m('progress').innerHTML=`已学习 <b>${done}</b> / ${lessons.length} 课`;
 
-function toggleLesson(header) {
-  header.classList.toggle('open');
-  header.nextElementSibling.classList.toggle('open');
+  $m('content').innerHTML=lessons.map((l,i)=>{
+    const open=openLessons[i]||false;
+    return`<div class="card" data-lesson="${i}">
+<div class="card-hd${open?' open':''}" onclick="togLesson(${i},this)">
+  <span class="badge">${i+1}</span>
+  <span class="info"><span class="title">${l.title}</span><span class="subtitle">${l.key||''}</span></span>
+  <span class="arrow">▼</span>
+</div>
+<div class="card-bd${open?' open':''}">
+${l.concepts?`<div class="sec"><div class="sec-tt">📌 核心概念</div>
+<table class="tbl">${l.concepts.map(c=>`<tr><td>${c.t}</td><td>${c.d}</td></tr>`).join('')}</table></div>`:''}
+${l.formulas?`<div class="sec"><div class="sec-tt">🔢 核心公式</div>
+<ul class="fml-list">${l.formulas.map(f=>`<li class="fml-item" data-katex="${esc(f)}"></li>`).join('')}</ul></div>`:''}
+${l.examples?`<div class="sec"><div class="sec-tt">📝 经典例题</div>
+${l.examples.map((ex,ei)=>{const aid=`a${i}_${ei}`;return`<div class="ex">
+<div class="ex-q">${ex.q.replace(/\n/g,'<br>')}</div>
+<div class="ex-a${showAns[aid]?' show':''}" id="${aid}">${ex.a.replace(/\n/g,'<br>')}</div>
+<button class="ex-btn" onclick="togAns('${aid}',this)">👆 ${showAns[aid]?'隐藏答案':'点击查看答案'}</button>
+</div>`}).join('')}</div>`:''}
+${l.tips?`<div class="tip">💡 ${l.tips}</div>`:''}
+</div></div>`}).join('');
+  // render katex
+  requestAnimationFrame(()=>{
+    document.querySelectorAll('[data-katex]').forEach(el=>{try{katex.render(el.dataset.katex,el,{throwOnError:false,displayMode:true})}catch(e){el.textContent=el.dataset.katex}});
+  });
 }
 
-function toggleExample(id, btn) {
-  const el = document.getElementById(id);
-  const show = !el.classList.contains('show');
-  el.classList.toggle('show');
-  btn.textContent = show ? '👆 隐藏答案' : '👆 点击查看答案';
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function togLesson(i,hd){
+  openLessons[i]=!openLessons[i];hd.classList.toggle('open');
+  hd.nextElementSibling.classList.toggle('open');
+  const done=Object.values(openLessons).filter(Boolean).length;
+  const total=D[curMod].subjects[curSub].lessons.length;
+  $m('progress').innerHTML=`已学习 <b>${done}</b> / ${total} 课`;
+}
+function togAns(id,btn){
+  showAns[id]=!showAns[id];
+  const el=$m(id);el.classList.toggle('show');
+  btn.textContent=showAns[id]?'👆 隐藏答案':'👆 点击查看答案';
 }
 
-// Init
-renderModuleTabs();
-renderSubjectTabs();
-renderContent();
+// init
+rModTabs();rSubTabs();rContent();
 </script>
 </body>
 </html>
